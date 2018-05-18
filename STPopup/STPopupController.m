@@ -110,6 +110,8 @@ static NSMutableSet *_retainedPopupControllers;
     NSMutableArray *_viewControllers; // <UIViewController>
     UIView *_contentView;
     UILabel *_defaultTitleLabel;
+    UIView *_navigationBarContainerView;
+    UIView *_navigationBarBottomLine;
     STPopupLeftBarItem *_defaultLeftBarItem;
     NSDictionary *_keyboardInfo;
     BOOL _observing;
@@ -429,7 +431,7 @@ static NSMutableSet *_retainedPopupControllers;
         UIView *fromTitleView, *toTitleView;
         if (lastTitleView == _defaultTitleLabel)    {
             UILabel *tempLabel = [[UILabel alloc] initWithFrame:_defaultTitleLabel.frame];
-            tempLabel.center = _navigationBar.center;
+//            tempLabel.center = _navigationBar.center;
             tempLabel.textColor = _defaultTitleLabel.textColor;
             tempLabel.font = _defaultTitleLabel.font;
             tempLabel.attributedText = [[NSAttributedString alloc] initWithString:_defaultTitleLabel.text ? : @""
@@ -514,11 +516,10 @@ static NSMutableSet *_retainedPopupControllers;
 {
     _backgroundView.frame = _containerViewController.view.bounds;
  
-    CGFloat preferredNavigationBarHeight = [self preferredNavigationBarHeight];
-    CGFloat navigationBarHeight = _navigationBarHidden ? 0 : preferredNavigationBarHeight;
+    CGFloat preferredNavigationBarContainerHeight = [self preferredNavigationBarContainerHeight];
     CGSize contentSizeOfTopView = [self contentSizeOfTopView];
     CGFloat containerViewWidth = contentSizeOfTopView.width;
-    CGFloat containerViewHeight = contentSizeOfTopView.height + navigationBarHeight;
+    CGFloat containerViewHeight = contentSizeOfTopView.height + preferredNavigationBarContainerHeight;
     CGFloat containerViewY = (_containerViewController.view.bounds.size.height - containerViewHeight) / 2;
     
     if (self.style == STPopupStyleBottomSheet) {
@@ -528,8 +529,13 @@ static NSMutableSet *_retainedPopupControllers;
     
     _containerView.frame = CGRectMake((_containerViewController.view.bounds.size.width - containerViewWidth) / 2,
                                       containerViewY, containerViewWidth, containerViewHeight);
-    _navigationBar.frame = CGRectMake(0, 0, containerViewWidth, preferredNavigationBarHeight);
-    _contentView.frame = CGRectMake(0, navigationBarHeight, contentSizeOfTopView.width, contentSizeOfTopView.height);
+    _navigationBarContainerView.frame = CGRectMake(0, 0, containerViewWidth, preferredNavigationBarContainerHeight);
+    _navigationBarBottomLine.frame = CGRectMake(0, preferredNavigationBarContainerHeight - 0.5, containerViewWidth, (_navigationBarBottomLineHidden?0:0.5));
+    
+    CGFloat preferredNavigationBarHeight = [self preferredNavigationBarHeight];
+    CGFloat navigationBarHeight = _navigationBarHidden ? 0 : preferredNavigationBarHeight;
+    _navigationBar.frame = CGRectMake(0, (preferredNavigationBarContainerHeight - preferredNavigationBarHeight) / 2, containerViewWidth, preferredNavigationBarHeight);
+    _contentView.frame = CGRectMake(0, preferredNavigationBarContainerHeight, contentSizeOfTopView.width, contentSizeOfTopView.height);
     
     UIViewController *topViewController = self.topViewController;
     topViewController.view.frame = _contentView.bounds;
@@ -565,6 +571,18 @@ static NSMutableSet *_retainedPopupControllers;
     // Create a navigation controller to get the preferred height of navigation bar.
     UINavigationController *navigationController = [UINavigationController new];
     return navigationController.navigationBar.bounds.size.height;
+}
+
+- (CGFloat)preferredNavigationBarContainerHeight
+{
+    CGFloat preferredNavigationBarHeight = [self preferredNavigationBarHeight];
+    if (_navigationBarHeight > preferredNavigationBarHeight) {
+        return _navigationBarHeight;
+    }
+    else
+    {
+        return preferredNavigationBarHeight;
+    }
 }
 
 #pragma mark - UI setup
@@ -608,11 +626,20 @@ static NSMutableSet *_retainedPopupControllers;
 
 - (void)setupNavigationBar
 {
+    _navigationBarContainerView = [UIView new];
+    _navigationBarContainerView.backgroundColor = [UIColor whiteColor];
+    [_containerView addSubview:_navigationBarContainerView];
+    _navigationBarBottomLine = [[UIView alloc]init];
+    _navigationBarBottomLine.backgroundColor = [UIColor colorWithRed:0xcc/255.f green:0xcc/255.f blue:0xcc/255.f alpha:1];
+    [_navigationBarContainerView addSubview:_navigationBarBottomLine];
+    
     STPopupNavigationBar *navigationBar = [STPopupNavigationBar new];
     navigationBar.touchEventDelegate = self;
+    [navigationBar setBackgroundImage:[[UIImage alloc] init] forBarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
+    [navigationBar setShadowImage:[[UIImage alloc] init]];
     
     _navigationBar = navigationBar;
-    [_containerView addSubview:_navigationBar];
+    [_navigationBarContainerView addSubview:_navigationBar];
     
     _defaultTitleLabel = [UILabel new];
     _defaultLeftBarItem = [[STPopupLeftBarItem alloc] initWithTarget:self action:@selector(leftBarItemDidTap)];
@@ -641,6 +668,24 @@ static NSMutableSet *_retainedPopupControllers;
 {
     _cornerRadius = cornerRadius;
     _containerView.layer.cornerRadius = self.cornerRadius;
+}
+
+- (UIImageView *)searchNavigationBarUnderLine:(UIView *)view
+{
+    // 查找是否属于UIImageView以及Frame是否小于1.0
+    if ([view isKindOfClass:[UIImageView class]] && view.bounds.size.height < 1.0f)
+    {
+        return (UIImageView *)view;
+    }
+
+    for (UIView *subView in view.subviews)
+    {
+        UIImageView *imageView = [self searchNavigationBarUnderLine:subView];
+        if (imageView) {
+            return imageView;
+        }
+    }
+    return nil;
 }
 
 #pragma mark - UIApplicationDidChangeStatusBarOrientationNotification

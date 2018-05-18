@@ -99,12 +99,14 @@ typedef NS_ENUM(NSUInteger, STPopupTransitionStyle) {
  Hidden status of navigation bar of popup.
  */
 @property (nonatomic, assign) BOOL navigationBarHidden;
+@property (nonatomic, assign) BOOL navigationBarBottomLineHidden; // 底部黑线隐藏
 
 /**
  Hides close button if there is only one view controller in the view controllers stack.
  */
 @property (nonatomic, assign) BOOL hidesCloseButton;
 
+@property (nonatomic, assign) CGFloat navigationBarHeight; ///< 导航栏的高度，默认导航栏纵向居中，且高度等于navigationBar.frame.size.height，低于默认高度的值将无效。
 /**
  Navigation bar of popup.
  @see STPopupNavigationBar
