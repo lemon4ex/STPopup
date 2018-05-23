@@ -14,8 +14,8 @@
 		76D8223C1C1DB5E400FCF988 /* STPopup.h in Headers */ = {isa = PBXBuildFile; fileRef = 76D8223B1C1DB5E400FCF988 /* STPopup.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		76D8224D1C1DB62600FCF988 /* STPopupController.h in Headers */ = {isa = PBXBuildFile; fileRef = 76D822431C1DB62600FCF988 /* STPopupController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		76D8224E1C1DB62600FCF988 /* STPopupController.m in Sources */ = {isa = PBXBuildFile; fileRef = 76D822441C1DB62600FCF988 /* STPopupController.m */; };
-		76D8224F1C1DB62600FCF988 /* STPopupLeftBarItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 76D822451C1DB62600FCF988 /* STPopupLeftBarItem.h */; };
-		76D822501C1DB62600FCF988 /* STPopupLeftBarItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 76D822461C1DB62600FCF988 /* STPopupLeftBarItem.m */; };
+		76D8224F1C1DB62600FCF988 /* STPopupBarItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 76D822451C1DB62600FCF988 /* STPopupBarItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		76D822501C1DB62600FCF988 /* STPopupBarItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 76D822461C1DB62600FCF988 /* STPopupBarItem.m */; };
 		76D822511C1DB62600FCF988 /* STPopupNavigationBar.h in Headers */ = {isa = PBXBuildFile; fileRef = 76D822471C1DB62600FCF988 /* STPopupNavigationBar.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		76D822521C1DB62600FCF988 /* STPopupNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 76D822481C1DB62600FCF988 /* STPopupNavigationBar.m */; };
 		76D822531C1DB62600FCF988 /* UIResponder+STPopup.h in Headers */ = {isa = PBXBuildFile; fileRef = 76D822491C1DB62600FCF988 /* UIResponder+STPopup.h */; };
@@ -34,8 +34,8 @@
 		76D8223D1C1DB5E400FCF988 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		76D822431C1DB62600FCF988 /* STPopupController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STPopupController.h; sourceTree = "<group>"; };
 		76D822441C1DB62600FCF988 /* STPopupController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STPopupController.m; sourceTree = "<group>"; };
-		76D822451C1DB62600FCF988 /* STPopupLeftBarItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STPopupLeftBarItem.h; sourceTree = "<group>"; };
-		76D822461C1DB62600FCF988 /* STPopupLeftBarItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STPopupLeftBarItem.m; sourceTree = "<group>"; };
+		76D822451C1DB62600FCF988 /* STPopupBarItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STPopupBarItem.h; sourceTree = "<group>"; };
+		76D822461C1DB62600FCF988 /* STPopupBarItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STPopupBarItem.m; sourceTree = "<group>"; };
 		76D822471C1DB62600FCF988 /* STPopupNavigationBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STPopupNavigationBar.h; sourceTree = "<group>"; };
 		76D822481C1DB62600FCF988 /* STPopupNavigationBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STPopupNavigationBar.m; sourceTree = "<group>"; };
 		76D822491C1DB62600FCF988 /* UIResponder+STPopup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIResponder+STPopup.h"; sourceTree = "<group>"; };
@@ -76,8 +76,8 @@
 			children = (
 				76D822431C1DB62600FCF988 /* STPopupController.h */,
 				76D822441C1DB62600FCF988 /* STPopupController.m */,
-				76D822451C1DB62600FCF988 /* STPopupLeftBarItem.h */,
-				76D822461C1DB62600FCF988 /* STPopupLeftBarItem.m */,
+				76D822451C1DB62600FCF988 /* STPopupBarItem.h */,
+				76D822461C1DB62600FCF988 /* STPopupBarItem.m */,
 				76D822471C1DB62600FCF988 /* STPopupNavigationBar.h */,
 				76D822481C1DB62600FCF988 /* STPopupNavigationBar.m */,
 				76D822491C1DB62600FCF988 /* UIResponder+STPopup.h */,
@@ -102,12 +102,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				76D822511C1DB62600FCF988 /* STPopupNavigationBar.h in Headers */,
+				76D8224F1C1DB62600FCF988 /* STPopupBarItem.h in Headers */,
 				0A14D9941D65971B00149145 /* STPopupControllerTransitioningSlideVertical.h in Headers */,
 				0A14D9981D65A03000149145 /* STPopupControllerTransitioningFade.h in Headers */,
 				76D822551C1DB62600FCF988 /* UIViewController+STPopup.h in Headers */,
 				76D8224D1C1DB62600FCF988 /* STPopupController.h in Headers */,
 				76D8223C1C1DB5E400FCF988 /* STPopup.h in Headers */,
-				76D8224F1C1DB62600FCF988 /* STPopupLeftBarItem.h in Headers */,
 				76D822531C1DB62600FCF988 /* UIResponder+STPopup.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -185,7 +185,7 @@
 				0A14D9951D65971B00149145 /* STPopupControllerTransitioningSlideVertical.m in Sources */,
 				76D8224E1C1DB62600FCF988 /* STPopupController.m in Sources */,
 				76D822541C1DB62600FCF988 /* UIResponder+STPopup.m in Sources */,
-				76D822501C1DB62600FCF988 /* STPopupLeftBarItem.m in Sources */,
+				76D822501C1DB62600FCF988 /* STPopupBarItem.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

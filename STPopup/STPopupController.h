@@ -113,11 +113,12 @@ typedef NS_ENUM(NSUInteger, STPopupTransitionStyle) {
  */
 @property (nonatomic, strong, readonly) STPopupNavigationBar *navigationBar;
 
+@property (nullable, nonatomic, strong) UIView *backgroundView;
 /**
  Background view which is between popup and the view presenting popup.
  By default it's a UIView with background color [UIColor colorWithWhite:0 alpha:0.5].
  */
-@property (nullable, nonatomic, strong) UIView *backgroundView;
+@property (nullable, nonatomic, strong) UIView *navigationBarContainerView;
 
 /**
  Container view which is containing the navigation bar and content of top most view controller.

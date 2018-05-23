@@ -6,9 +6,9 @@
 //  Copyright (c) 2015 Sth4Me. All rights reserved.
 //
 
-#import "STPopupLeftBarItem.h"
+#import "STPopupBarItem.h"
 
-@implementation STPopupLeftBarItem
+@implementation STPopupBarItem
 {
     UIControl *_customView;
     UIView *_bar1;
@@ -34,12 +34,12 @@
     return self;
 }
 
-- (void)setType:(STPopupLeftBarItemType)type
+- (void)setType:(STPopupBarItemType)type
 {
     [self setType:type animated:NO];
 }
 
-- (void)setType:(STPopupLeftBarItemType)type animated:(BOOL)animated
+- (void)setType:(STPopupBarItemType)type animated:(BOOL)animated
 {
     _type = type;
     if (animated) {
@@ -56,14 +56,14 @@
 {
     float barWidth, barHeight = 1.5, barX, bar1Y, bar2Y;
     switch (self.type) {
-        case STPopupLeftBarItemCross: {
+        case STPopupBarItemCross: {
             barWidth = _customView.frame.size.height * 2 / 5;
             barX = (_customView.frame.size.width - barWidth) / 2;
             bar1Y = (_customView.frame.size.height - barHeight) / 2;
             bar2Y = bar1Y;
         }
             break;
-        case STPopupLeftBarItemArrow: {
+        case STPopupBarItemArrow: {
             barWidth = _customView.frame.size.height / 4;
             barX = (_customView.frame.size.width - barWidth) / 2 - barWidth / 2;
             bar1Y = (_customView.frame.size.height - barHeight) / 2 + barWidth / 2 * sin(M_PI_4);

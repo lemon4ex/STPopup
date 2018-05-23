@@ -7,7 +7,7 @@
 //
 
 #import "STPopupController.h"
-#import "STPopupLeftBarItem.h"
+#import "STPopupBarItem.h"
 #import "STPopupNavigationBar.h"
 #import "UIViewController+STPopup.h"
 #import "UIResponder+STPopup.h"
@@ -112,7 +112,7 @@ static NSMutableSet *_retainedPopupControllers;
     UILabel *_defaultTitleLabel;
     UIView *_navigationBarContainerView;
     UIView *_navigationBarBottomLine;
-    STPopupLeftBarItem *_defaultLeftBarItem;
+    STPopupBarItem *_defaultLeftBarItem;
     NSDictionary *_keyboardInfo;
     BOOL _observing;
     
@@ -479,7 +479,7 @@ static NSMutableSet *_retainedPopupControllers;
         }
     }
     _defaultLeftBarItem.tintColor = _navigationBar.tintColor;
-    [_defaultLeftBarItem setType:_viewControllers.count > 1 ? STPopupLeftBarItemArrow : STPopupLeftBarItemCross
+    [_defaultLeftBarItem setType:_viewControllers.count > 1 ? STPopupBarItemArrow : STPopupBarItemCross
                         animated:shouldAnimateDefaultLeftBarItem];
 }
 
@@ -517,9 +517,10 @@ static NSMutableSet *_retainedPopupControllers;
     _backgroundView.frame = _containerViewController.view.bounds;
  
     CGFloat preferredNavigationBarContainerHeight = [self preferredNavigationBarContainerHeight];
+    CGFloat navigationBarContainerHeight = _navigationBarHidden ? 0 : preferredNavigationBarContainerHeight;
     CGSize contentSizeOfTopView = [self contentSizeOfTopView];
     CGFloat containerViewWidth = contentSizeOfTopView.width;
-    CGFloat containerViewHeight = contentSizeOfTopView.height + preferredNavigationBarContainerHeight;
+    CGFloat containerViewHeight = contentSizeOfTopView.height + navigationBarContainerHeight;
     CGFloat containerViewY = (_containerViewController.view.bounds.size.height - containerViewHeight) / 2;
     
     if (self.style == STPopupStyleBottomSheet) {
@@ -529,13 +530,14 @@ static NSMutableSet *_retainedPopupControllers;
     
     _containerView.frame = CGRectMake((_containerViewController.view.bounds.size.width - containerViewWidth) / 2,
                                       containerViewY, containerViewWidth, containerViewHeight);
-    _navigationBarContainerView.frame = CGRectMake(0, 0, containerViewWidth, preferredNavigationBarContainerHeight);
-    _navigationBarBottomLine.frame = CGRectMake(0, preferredNavigationBarContainerHeight - 0.5, containerViewWidth, (_navigationBarBottomLineHidden?0:0.5));
+    
+    _navigationBarContainerView.frame = CGRectMake(0, 0, containerViewWidth, navigationBarContainerHeight);
+    _navigationBarBottomLine.frame = CGRectMake(0, navigationBarContainerHeight - 0.5, containerViewWidth, (_navigationBarBottomLineHidden?0:0.5));
     
     CGFloat preferredNavigationBarHeight = [self preferredNavigationBarHeight];
     CGFloat navigationBarHeight = _navigationBarHidden ? 0 : preferredNavigationBarHeight;
-    _navigationBar.frame = CGRectMake(0, (preferredNavigationBarContainerHeight - preferredNavigationBarHeight) / 2, containerViewWidth, preferredNavigationBarHeight);
-    _contentView.frame = CGRectMake(0, preferredNavigationBarContainerHeight, contentSizeOfTopView.width, contentSizeOfTopView.height);
+    _navigationBar.frame = CGRectMake(0, (navigationBarContainerHeight - preferredNavigationBarHeight) / 2, containerViewWidth, navigationBarHeight);
+    _contentView.frame = CGRectMake(0, navigationBarContainerHeight, contentSizeOfTopView.width, contentSizeOfTopView.height);
     
     UIViewController *topViewController = self.topViewController;
     topViewController.view.frame = _contentView.bounds;
@@ -642,16 +644,16 @@ static NSMutableSet *_retainedPopupControllers;
     [_navigationBarContainerView addSubview:_navigationBar];
     
     _defaultTitleLabel = [UILabel new];
-    _defaultLeftBarItem = [[STPopupLeftBarItem alloc] initWithTarget:self action:@selector(leftBarItemDidTap)];
+    _defaultLeftBarItem = [[STPopupBarItem alloc] initWithTarget:self action:@selector(leftBarItemDidTap)];
 }
 
 - (void)leftBarItemDidTap
 {
     switch (_defaultLeftBarItem.type) {
-        case STPopupLeftBarItemCross:
+        case STPopupBarItemCross:
             [self dismiss];
             break;
-        case STPopupLeftBarItemArrow:
+        case STPopupBarItemArrow:
             [self popViewControllerAnimated:YES];
             break;
         default:
